@@ -7,6 +7,7 @@ require('./config/config')
 const {mongoose} = require("./db/mongoose");
 const {Todo} = require('./models/todo');
 const {Users} = require("./models/users");
+const {authenticate} = require('./middleware/authenticate');
 
 const port = process.env.PORT;
 var app = express();
@@ -36,6 +37,10 @@ user.save().then(() => {
 }).catch((e) => {
   res.status(400).send(e);
 });
+});
+
+app.get('/user/me', authenticate, (req, res) => {
+res.send(req.user);
 });
 
 app.get('/todos', (req, res) => {
@@ -102,7 +107,6 @@ app.patch('/todos/:id', (req, res) => {
     res.send({todo});
   }).catch((e) => res.status(400).send());
 });
-
 
 
 app.listen(port, () => {
