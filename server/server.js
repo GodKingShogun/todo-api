@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const {ObjectId} = require('mongodb');
 
 require('./config/config')
+
 const {mongoose} = require("./db/mongoose");
 const {Todo} = require('./models/todo');
 const {Users} = require("./models/users");
@@ -41,6 +42,18 @@ user.save().then(() => {
 
 app.get('/user/me', authenticate, (req, res) => {
 res.send(req.user);
+});
+
+app.post('/user/login', (req, res) => {
+  var body = _.pick(req.body, ['email', 'password']);
+  var email = body.email;
+  var password = body.password;
+
+Users.findByCredentials(email, password).then((user) => {
+  return user.generateAuthToken().then((token) => {
+    res.header('x-auth', token).send(user);
+  });
+  }).catch((e) => res.status(400).send());
 });
 
 app.get('/todos', (req, res) => {
