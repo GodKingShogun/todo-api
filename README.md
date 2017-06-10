@@ -6,9 +6,9 @@ Rest api that allows you to create, fetch, update, and delete a todo list. Sign 
 
 ##### Built With
 
-. Express
-. MongoDB
-. Mongoose
-. Bcrypt
-. JWT
+* Express
+* MongoDB
+* Mongoose
+* Bcrypt
+* JWT
 
